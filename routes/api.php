@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExpenseCategoryController;
 use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\UtilityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,5 +31,5 @@ Route::middleware('auth:api')->group(function () {
     
     Route::apiResource('categories', ExpenseCategoryController::class);
     Route::apiResource('expenses', ExpenseController::class);
-    
+    Route::get('/summary', [UtilityController::class, 'summary'])->name('utility.summary');
 });
