@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ExpenseCategoryController;
+use App\Http\Controllers\ExpenseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,5 +26,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:api')->group(function () {
     Route::get('/me', function () {
         return response()->json(auth()->user());
-    });    
+    });
+    Route::apiResource('categories', ExpenseCategoryController::class);
+    Route::apiResource('expense', ExpenseController::class);
 });
