@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\ExpenseCategoryRequest;
 use App\Models\ExpenseCategory;
+use App\Http\Resources\ExpenseCategoryResource;
 use PDOException;
 
 class ExpenseCategoryController extends Controller
@@ -15,7 +16,7 @@ class ExpenseCategoryController extends Controller
     public function index()
     {
         $categories = ExpenseCategory::orderBy('id', 'desc')->get();
-        return response()->json(['data' => $categories], 200);
+        return response()->json(['data' => ExpenseCategoryResource::collection($categories)], 200);
     }
 
     /**
@@ -28,7 +29,7 @@ class ExpenseCategoryController extends Controller
         ], $request->validated());
         
         $category = ExpenseCategory::create($validated);
-        return response()->json(['data' => $category], 201);
+        return response()->json(['data' => new ExpenseCategoryResource($category)], 201);
     }
 
     /**
@@ -36,7 +37,7 @@ class ExpenseCategoryController extends Controller
      */
     public function show(ExpenseCategory $category)
     {
-        return response()->json(['data' => $category], 200);
+        return response()->json(['data' => new ExpenseCategoryResource($category)], 200);
     }
 
     /**
@@ -45,7 +46,7 @@ class ExpenseCategoryController extends Controller
     public function update(ExpenseCategoryRequest $request, ExpenseCategory $category)
     {
         $category->update($request->validated());
-        return response()->json(['data' => $category], 201);
+        return response()->json(['data' => new ExpenseCategoryResource($category)], 201);
     }
 
     /**

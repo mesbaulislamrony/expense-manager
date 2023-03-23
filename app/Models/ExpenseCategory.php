@@ -11,4 +11,9 @@ class ExpenseCategory extends Model
     use HasFactory, LoggedUserScopeTrait;
 
     protected $fillable = ['user_id', 'name', 'url'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
