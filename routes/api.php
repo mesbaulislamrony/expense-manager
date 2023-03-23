@@ -28,5 +28,5 @@ Route::middleware('auth:api')->group(function () {
         return response()->json(auth()->user());
     });
     Route::apiResource('categories', ExpenseCategoryController::class);
-    Route::apiResource('expense', ExpenseController::class);
+    Route::apiResource('expenses', ExpenseController::class);
 });
