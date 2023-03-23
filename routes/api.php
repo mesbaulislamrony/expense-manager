@@ -27,12 +27,8 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/me', function () {
         return response()->json(auth()->user());
     })->name('profile.me');
-
-    Route::controller(ExpenseCategoryController::class)->prefix('categories')->group(function () {
-        Route::get('/', 'index')->name('categories.index');
-        Route::post('/', 'store')->name('categories.store');
-        Route::get('/{id}', 'show')->name('categories.show');
-        Route::post('/{id}', 'update')->name('categories.update');
-        Route::delete('/{id}', 'destroy')->name('categories.destroy');
-    });
+    
+    Route::apiResource('categories', ExpenseCategoryController::class);
+    Route::apiResource('expenses', ExpenseController::class);
+    
 });

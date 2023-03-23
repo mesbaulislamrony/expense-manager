@@ -26,15 +26,7 @@ class AuthController extends Controller
         }
 
         $user = Auth::user();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Login Successful',
-            'user' => $user,
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ], 200);
+        return response()->json(['data' => $token], 200);
 
     }
 
@@ -47,37 +39,17 @@ class AuthController extends Controller
         ]);
 
         $token = Auth::login($user);
-
-        return response()->json([
-            'status' => 'success',
-            'message' => 'User created successfully',
-            'user' => $user,
-            'authorisation' => [
-                'token' => $token,
-                'type' => 'bearer',
-            ]
-        ], 200);
+        return response()->json(['data' => $token], 200);
     }
 
     public function logout()
     {
         Auth::logout();
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Successfully logged out',
-        ], 200);
+        return response()->json(['data' => null], 204);
     }
 
     public function refresh()
     {
-        return response()->json([
-            'status' => 'success',
-            'message' => 'Token refresh successfully',
-            'user' => Auth::user(),
-            'authorisation' => [
-                'token' => Auth::refresh(),
-                'type' => 'bearer',
-            ]
-        ], 200);
+        return response()->json(['data' => Auth::refresh()], 200);
     }
 }

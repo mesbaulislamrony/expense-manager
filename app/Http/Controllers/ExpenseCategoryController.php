@@ -15,7 +15,7 @@ class ExpenseCategoryController extends Controller
     public function index()
     {
         $categories = ExpenseCategory::orderBy('id', 'desc')->get();
-        return response()->json($categories, 200);
+        return response()->json(['data' => $categories], 200);
     }
 
     /**
@@ -23,90 +23,37 @@ class ExpenseCategoryController extends Controller
      */
     public function store(ExpenseCategoryRequest $request)
     {
-        $validated = array_merge(['user_id' => auth()->user()->id], $request->validated());
-
-        try {
-            $category = ExpenseCategory::create($validated);
-            
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Category created successfully',
-                'category' => $category
-            ], 200);
-
-        } catch (PDOException $e) {
-            dd($e);
-            return response()->json(['status' => 'error', 'message' => 'Category create failed'], 400);
-        }
+        $validated = array_merge([
+            'user_id' => auth()->user()->id
+        ], $request->validated());
+        
+        $category = ExpenseCategory::create($validated);
+        return response()->json(['data' => $category], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(ExpenseCategory $category)
     {
-        $category = ExpenseCategory::find($id);
-
-        if(!$category)
-        {
-            return response()->json(['status' => 'error', 'message' => 'Category not found'], 400);
-        }
-
-        return response()->json($category, 200);
+        return response()->json(['data' => $category], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(ExpenseCategoryRequest $request, $id)
+    public function update(ExpenseCategoryRequest $request, ExpenseCategory $category)
     {
-        $category = ExpenseCategory::find($id);
-
-        if(!$category)
-        {
-            return response()->json(['status' => 'error', 'message' => 'Category not found'], 400);
-        }
-
-        try {
-
-            $category->update($request->validated());
-            
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Category update successfully',
-                'category' => $category
-            ], 200);
-
-        } catch (PDOException $e) {
-            dd($e);
-            return response()->json(['status' => 'error', 'message' => 'Category update failed'], 400);
-        }
+        $category->update($request->validated());
+        return response()->json(['data' => $category], 201);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(ExpenseCategory $category)
     {
-        $category = ExpenseCategory::find($id);
-
-        if(!$category)
-        {
-            return response()->json(['status' => 'error', 'message' => 'Category not found'], 400);
-        }
-
-        try {
-
-            $category->delete();
-            
-            return response()->json([
-                'status' => 'success',
-                'message' => 'Category delete successfully',
-            ], 200);
-
-        } catch (PDOException $e) {
-            dd($e);
-            return response()->json(['status' => 'error', 'message' => 'Category delete failed'], 400);
-        }
+        $category->delete();
+        return response()->json(['data' => null], 204);
     }
 }

@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ExpenseCategoryRequest extends FormRequest
+class ExpenseRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,19 +23,11 @@ class ExpenseCategoryRequest extends FormRequest
      */
     public function rules(): array
     {
-        $validations = [
-            'url' => 'nullable|string',
+        return [
+            'expense_category_id' => 'required|numeric|exists:expense_categories,id',
+            'amount' => 'required|numeric',
+            'note' => 'nullable|string|max:255',
         ];
-        
-        if (!empty($this->category->id)) {
-            return array_merge($validations, [
-                'name' => 'required|string|unique:expense_categories,name,' . $this->category->id,
-            ]);
-        }
-        
-        return array_merge($validations, [
-            'name' => 'required|string|max:255|unique:expense_categories',
-        ]);
     }
 
     protected function failedValidation(Validator $validator)
