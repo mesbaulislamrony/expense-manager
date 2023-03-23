@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->integer('expense_category_id');
+            $table->date('date');
             $table->double('amount', 10, 2);
             $table->text('note')->nullable();
             $table->timestamps();
