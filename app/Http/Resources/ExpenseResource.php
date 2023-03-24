@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\ExpenseCategoryResource;
+use Carbon\Carbon;
 
 class ExpenseResource extends JsonResource
 {
@@ -19,6 +20,7 @@ class ExpenseResource extends JsonResource
         return [
             'id' => $this->id,
             'amount' => $this->amount,
+            'date' => Carbon::parse($this->date)->format('d F'),
             'category' => new ExpenseCategoryResource($this->category),
             'user' => new UserResource($this->user),
         ];

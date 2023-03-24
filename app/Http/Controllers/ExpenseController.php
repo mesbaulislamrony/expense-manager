@@ -14,9 +14,24 @@ class ExpenseController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $expenses = Expense::with('category', 'user')->where(['date' => Carbon::today()->format('Y-m-d')])->orderBy('id', 'desc')->get();
+        $now = Carbon::now();
+        $query = Expense::with('category', 'user')->orderBy('id', 'desc');
+        $query->when($request->today, function ($q) use ($request, $now) {
+            $q->where('date', $now->format('Y-m-d'));
+        });
+        $query->when($request->week, function ($q) use ($request, $now) {
+            $q->whereBetween('date', [$now->startOfWeek(Carbon::SATURDAY)->format('Y-m-d'), $now->endOfWeek(Carbon::FRIDAY)->format('Y-m-d')]);
+        });
+        $query->when($request->month, function ($q) use ($request, $now) {
+            $q->whereBetween('date', [$now->startOfMonth()->format('Y-m-d'), $now->endOfMonth()->format('Y-m-d')]);
+        });
+        $query->when($request->year, function ($q) use ($request, $now) {
+            $q->whereBetween('date', [$now->startOfYear()->format('Y-m-d'), $now->endOfYear()->format('Y-m-d')]);
+        });
+        $query->where('date', $now->format('Y-m-d'));
+        $expenses = $query->get();
         return response()->json(['data' => ExpenseResource::collection($expenses)], 200);
     }
 
