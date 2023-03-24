@@ -2,6 +2,12 @@
 
 Design of an expense manager feature.
 
+## Tools & Technologies
+![PHP](https://img.shields.io/static/v1?label=PHP&message=^8.1&color=blue)
+![Laravel](https://img.shields.io/static/v1?label=Laravel&message=^10.0&color=red)
+![JSON Web Tokens](https://img.shields.io/static/v1?label=JWT&message=^2.0&color=yellow)
+
+
 ## Run Locally
 
 Clone the project
